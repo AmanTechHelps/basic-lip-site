@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio-Responsive GIF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+    <style>
+        #gifContainer {
+            position: relative;
+            width: 300px; /* Adjust to the size of your GIF */
+            height: 300px; /* Adjust to the size of your GIF */
+        }
+
+        #gifContainer img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #gifContainer img#animatedGif {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="gifContainer">
+        <img id="staticImage" src="static-3.jpg"> <!-- Replace with your static image -->
+        <img id="animatedGif" src="tenor.gif"> <!-- Replace with your GIF -->
+    </div>
+    <button id="playButton">Play</button>
+
+    <script>
+        let audio, amplitude, gif, staticImage;
+
+        function preload() {
+            // Replace with the URL of your online audio file
+            audio = loadSound('your_audio.mp3');
+        }
+
+        function setup() {
+            amplitude = new p5.Amplitude();
+            gif = document.getElementById('animatedGif');
+            staticImage = document.getElementById('staticImage');
+            document.getElementById('playButton').addEventListener('click', playAudioAndGif);
+        }
+
+        function playAudioAndGif() {
+            if (audio.isPlaying()) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+        }
+
+        function draw() {
+            let level = amplitude.getLevel();
+            let threshold = 0.1; // Adjust this threshold based on your audio
+
+            if (level > threshold) {
+                gif.style.display = 'block';
+                staticImage.style.display = 'none';
+            } else {
+                gif.style.display = 'none';
+                staticImage.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
